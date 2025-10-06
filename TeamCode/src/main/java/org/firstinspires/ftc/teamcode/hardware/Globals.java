@@ -8,31 +8,16 @@ public class Globals {
      */
 
     public static class Intake {
-        public static final String EXTENDO_MOTOR = "extendo";
+
         public static final String INTAKE_MOTOR = "intake";
-        public static final String INTAKE_SERVO = "bucket";
 
-
-        public static final double BUCKET_UP = 0.34;
-        public static final double BUCKET_DOWN = 0.86;
-        public static final double BUCKET_DUMP = 0.18;
-        public static final double BUCKET_PURGE = 0.7;
-
-        public static final double EXTENDO_POWER_OUT = 1;
-        public static final double EXTENDO_POWER_IN = -1;
-        public static final double EXTENDO_POWER_OFF = 0;
-        public static final int EXTENDO_OUT = 2300;
-        public static final int EXTENDO_IN = 10;
-
-        public static final double POWER_DUMP = -0.6;
         public static final double POWER_OFF = 0;
         public static final double POWER_ON = 1;
-        public static final double POWER_PURGE = -0.3;
 
-        public static final int SENSOR_RED_THRESHOLD = 300;
-        public static final int SENSOR_YELLOW_THRESHOLD_RED = 300;
-        public static final int SENSOR_YELLOW_THRESHOLD_GREEN = 300;
-        public static final int SENSOR_BLUE_THRESHOLD = 300;
+//        public static final int SENSOR_RED_THRESHOLD = 300;
+//        public static final int SENSOR_YELLOW_THRESHOLD_RED = 300;
+//        public static final int SENSOR_YELLOW_THRESHOLD_GREEN = 300;
+//        public static final int SENSOR_BLUE_THRESHOLD = 300;
     }
 
     public static final class Outtake {
@@ -62,7 +47,7 @@ public class Globals {
         public static final String LEFT_BACK_DRIVE = "leftBack";
         public static final String RIGHT_BACK_DRIVE = "rightBack";
 
-        public static final double MAX_SPEED = 0.8;
+        public static final double MAX_SPEED = 0.5;
         public static final double WHEEL_LOCK_MIN = 0.2;
     }
 }
