@@ -64,7 +64,7 @@ public class Intake implements SubSystem {
     public List<Action> update() {
         List<Action> newActions = new ArrayList<>();
 
-        if (config.gamepad1.y){
+        if (config.gamepad1.x){
             newActions.add(runIntake());
         }
         else

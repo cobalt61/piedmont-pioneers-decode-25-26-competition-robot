@@ -42,10 +42,10 @@ public class Globals {
     }
 
     public static final class Drive {
-        public static final String LEFT_FRONT_DRIVE = "leftFront";
-        public static final String RIGHT_FRONT_DRIVE = "rightFront";
-        public static final String LEFT_BACK_DRIVE = "leftBack";
-        public static final String RIGHT_BACK_DRIVE = "rightBack";
+        public static final String LEFT_FRONT_DRIVE = "left_front_drive";
+        public static final String RIGHT_FRONT_DRIVE = "right_front_drive";
+        public static final String LEFT_BACK_DRIVE = "left_back_drive";
+        public static final String RIGHT_BACK_DRIVE = "right_back_drive";
 
         public static final double MAX_SPEED = 0.5;
         public static final double WHEEL_LOCK_MIN = 0.2;
