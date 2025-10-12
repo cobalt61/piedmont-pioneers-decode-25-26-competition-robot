@@ -21,12 +21,10 @@ public class Globals {
     }
 
     public static final class Outtake {
-        public static final String RIGHT_LIFT_MOTOR = "right";
-        public static final String LEFT_LIFT_MOTOR = "left";
+        public static final String BOTTOM_FLYWHEEL = "bottomFlywheel";
+        public static final String TOP_FLYWHEEL = "topFlywheel";
         public static final String LIMIT_SWITCH = "v";
-        public static final String OUTTAKE_SERVO = "bucket";
-        public static final String CLAW_SERVO = "claw";
-
+        public static final String INDEXER = "indexer";
         public static final int LIFT_TOP_BASKET = 4500;
         public static final int LIFT_BOTTOM_BASKET = 2700;
 

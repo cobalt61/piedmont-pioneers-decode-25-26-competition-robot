@@ -16,29 +16,19 @@ import java.util.List;
 public class Outtake implements SubSystem {
 
     // Lift positions
-    public enum LiftPosition {
-        BOTTOM,
-        LOWERING,
-        RISING,
-        TOP_BASKET,
-        TOP_BAR,
-        CLIPPING
+    public enum OuttakeStates {
+        SPINNING,
+        INDEXING,
+        STOPPED
     }
 
-    public enum LiftDirection {
-        UP,
-        DOWN,
-        STOP
-    }
 
     // Constants for joystick thresholds
     private static final double JOYSTICK_THRESHOLD = 0.25;
 
     private final Config config;
-    private DcMotor right, left;
+    private DcMotor bottomFlywheel, topFlywheel, indexer;
     private DigitalChannel switchV;
-    private LiftPosition position;
-    private LiftDirection direction;
 
     public Outtake(Config config) {
         this.config = config;
@@ -46,21 +36,21 @@ public class Outtake implements SubSystem {
 
     @Override
     public void init() {
-        right = config.hardwareMap.get(DcMotor.class, Globals.Outtake.RIGHT_LIFT_MOTOR);
-        left = config.hardwareMap.get(DcMotor.class, Globals.Outtake.LEFT_LIFT_MOTOR);
+        bottomFlywheel = config.hardwareMap.get(DcMotor.class, Globals.Outtake.BOTTOM_FLYWHEEL);
+        topFlywheel = config.hardwareMap.get(DcMotor.class, Globals.Outtake.TOP_FLYWHEEL);
+        indexer = config.hardwareMap.get(DcMotor.class, Globals.Outtake.INDEXER);
 
-        switchV = config.hardwareMap.get(DigitalChannel.class, Globals.Outtake.LIMIT_SWITCH);
+
 
         // Set motor directions
-        right.setDirection(DcMotor.Direction.REVERSE);
-        left.setDirection(DcMotor.Direction.REVERSE);
+        bottomFlywheel.setDirection(DcMotor.Direction.REVERSE);
+        topFlywheel.setDirection(DcMotor.Direction.REVERSE);
+        indexer.setDirection(DcMotor.Direction.REVERSE);
 
         // Reset encoders and set motor modes
         resetMotors();
 
-        position = LiftPosition.BOTTOM;
 
-        direction = LiftDirection.STOP;
     }
 
     @Override
@@ -71,19 +61,23 @@ public class Outtake implements SubSystem {
         List<Action> newActions = new ArrayList<>();
 
         // Zero the lift if the back button is pressed
-        if (config.gamepad2.back) {
-            resetMotors();
+        if (config.gamepad1.right_trigger >= 0.1){
+
+
         }
-        if (config.gamepad2.right_trigger >= 0.1) {
-            setLiftPower(Math.min(1,config.gamepad2.right_trigger*2));
-        } else if (config.gamepad2.left_trigger >= 0.1 && !switchV.getState()) {
-            setLiftPower(-Math.min(1,config.gamepad2.left_trigger*2));
-        } else if (!switchV.getState()) {
-            setLiftPower(Globals.Outtake.LIFT_IDLE);
-        } else {
-            setLiftPower(Globals.Outtake.LIFT_OFF);
-            resetMotors();
-        }
+//        if (config.gamepad2.back) {
+//            resetMotors();
+//        }
+//        if (config.gamepad2.right_trigger >= 0.1) {
+//            setLiftPower(Math.min(1,config.gamepad2.right_trigger*2));
+//        } else if (config.gamepad2.left_trigger >= 0.1 && !switchV.getState()) {
+//            setLiftPower(-Math.min(1,config.gamepad2.left_trigger*2));
+//        } else if (!switchV.getState()) {
+//            setLiftPower(Globals.Outtake.LIFT_IDLE);
+//        } else {
+//            setLiftPower(Globals.Outtake.LIFT_OFF);
+//            resetMotors();
+//        }
 
         if (config.gamepad2.dpad_left) {
             newActions.add(lowerToBottom());
@@ -132,73 +126,11 @@ public class Outtake implements SubSystem {
         config.telemetry.addData("Switch", switchV.getState());
     }
 
-    public Action raiseToPosition(int target) {
-        return telemetryPacket -> {
-            if (config.stage == GameStage.Autonomous) {
-                direction = LiftDirection.UP;
-            }
 
-            if (position != LiftPosition.RISING) {
-                setLiftPower(Globals.Outtake.LIFT_UP);
-                position = LiftPosition.RISING;
-            }
 
-            updateTelemetry(telemetryPacket);
 
-            if (right.getCurrentPosition() >= target) {
-                setLiftPower(Globals.Outtake.LIFT_IDLE);
-                position = (target == Globals.Outtake.LIFT_TOP_BASKET) ? LiftPosition.TOP_BASKET : LiftPosition.TOP_BAR;
-                direction = LiftDirection.STOP;
-            }
 
-            return direction == LiftDirection.UP;
-        };
-    }
 
-    public Action lowerToPosition(int target) {
-        return telemetryPacket -> {
-            if (config.stage == GameStage.Autonomous && direction != LiftDirection.DOWN) {
-                direction = LiftDirection.DOWN;
-            }
-            if (position != LiftPosition.LOWERING) {
-                setLiftPower(Globals.Outtake.LIFT_DOWN);
-                position = LiftPosition.LOWERING;
-            }
-
-            updateTelemetry(telemetryPacket);
-
-            if (right.getCurrentPosition() <= target) {
-                setLiftPower(Globals.Outtake.LIFT_OFF);
-                position = LiftPosition.CLIPPING;
-                direction = LiftDirection.STOP;
-            }
-
-            return direction == LiftDirection.DOWN;
-        };
-    }
-
-    public Action lowerToBottom() {
-        return telemetryPacket -> {
-            if (config.stage == GameStage.Autonomous && direction != LiftDirection.DOWN) {
-                direction = LiftDirection.DOWN;
-            }
-            if (position != LiftPosition.LOWERING) {
-                setLiftPower(Globals.Outtake.LIFT_DOWN);
-                position = LiftPosition.LOWERING;
-            }
-
-            updateTelemetry(telemetryPacket);
-
-            if (switchV.getState()) {
-                setLiftPower(Globals.Outtake.LIFT_OFF);
-                position = (switchV.getState()) ? LiftPosition.CLIPPING : LiftPosition.BOTTOM;
-                direction = LiftDirection.STOP;
-                if (switchV.getState()) {resetMotors();}
-            }
-
-            return direction == LiftDirection.DOWN;
-        };
-    }
 
     private void updateTelemetry(TelemetryPacket telemetryPacket) {
         telemetryPacket.put("Right Lift Pos", right.getCurrentPosition());
@@ -212,38 +144,13 @@ public class Outtake implements SubSystem {
         addTelemetryData();
     }
 
-    private void setLiftPower(double power) {
-        right.setPower(power);
-        left.setPower(power);
+    public InstantAction runFlywheels() {
+        return new InstantAction(() -> {
+            bottomFlywheel.setPower(config.gamepad1.right_trigger*2);
+            topFlywheel.setPower(config.gamepad1.right_trigger*2);
+            state = Globals.Outtake.IntakeState.INTAKING;
+        });
     }
 
-    public Action bar() {
-        return raiseToPosition(Globals.Outtake.LIFT_TOP_BAR);
-    }
 
-    public Action bucket() {
-        return raiseToPosition(Globals.Outtake.LIFT_TOP_BASKET);
-    }
-
-    public Action clip() {
-        return lowerToPosition(Globals.Outtake.LIFT_TOP_BAR_ATTACH);
-    }
-
-    public Action down() {
-        return lowerToBottom();
-    }
-
-    public InstantAction zero() {
-        return new InstantAction(this::resetMotors);
-    }
-
-    private void resetMotors() {
-        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        position = LiftPosition.BOTTOM;
-    }
 }
