@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.hardware.subsystem;
 
+import android.provider.Settings;
+
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.InstantAction;
@@ -16,8 +18,8 @@ import java.util.List;
 public class Outtake implements SubSystem {
 
     // Lift positions
-    public enum OuttakeStates {
-        SPINNING,
+    public enum OuttakeState {
+        SPINNING_UP,
         INDEXING,
         STOPPED
     }
@@ -28,7 +30,8 @@ public class Outtake implements SubSystem {
 
     private final Config config;
     private DcMotor bottomFlywheel, topFlywheel, indexer;
-    private DigitalChannel switchV;
+    OuttakeState state;
+
 
     public Outtake(Config config) {
         this.config = config;
@@ -62,26 +65,19 @@ public class Outtake implements SubSystem {
 
         // Zero the lift if the back button is pressed
         if (config.gamepad1.right_trigger >= 0.1){
-
-
+            newActions.add(runFlywheels(config.gamepad1.right_trigger));
         }
-//        if (config.gamepad2.back) {
-//            resetMotors();
-//        }
-//        if (config.gamepad2.right_trigger >= 0.1) {
-//            setLiftPower(Math.min(1,config.gamepad2.right_trigger*2));
-//        } else if (config.gamepad2.left_trigger >= 0.1 && !switchV.getState()) {
-//            setLiftPower(-Math.min(1,config.gamepad2.left_trigger*2));
-//        } else if (!switchV.getState()) {
-//            setLiftPower(Globals.Outtake.LIFT_IDLE);
-//        } else {
-//            setLiftPower(Globals.Outtake.LIFT_OFF);
-//            resetMotors();
-//        }
-
-        if (config.gamepad2.dpad_left) {
-            newActions.add(lowerToBottom());
+        else
+        {
+            newActions.add(stopFlywheels());
         }
+        if (config.gamepad1.right_bumper) {
+            newActions.add(runIndexer());
+        }else{
+            newActions.add(stopIndexer());
+        }
+
+
 
 /*
         // Handle joystick controls
@@ -117,13 +113,17 @@ public class Outtake implements SubSystem {
     }
 
     private void addTelemetryData() {
-        config.telemetry.addData("Right Lift Pos", right.getCurrentPosition());
-        config.telemetry.addData("Right Lift Power", right.getPower());
-        config.telemetry.addData("Left Lift Pos", left.getCurrentPosition());
-        config.telemetry.addData("Left Lift Power", left.getPower());
-        config.telemetry.addData("Lift Position", position);
-        config.telemetry.addData("Lift Direction", direction);
-        config.telemetry.addData("Switch", switchV.getState());
+//        config.telemetry.addData("Right Lift Pos", right.getCurrentPosition());
+//        config.telemetry.addData("Right Lift Power", right.getPower());
+//        config.telemetry.addData("Left Lift Pos", left.getCurrentPosition());
+//        config.telemetry.addData("Left Lift Power", left.getPower());
+//        config.telemetry.addData("Lift Position", position);
+//        config.telemetry.addData("Lift Direction", direction);
+//        config.telemetry.addData("Switch", switchV.getState());
+        config.telemetry.addData("Flywheel State:",state);
+        config.telemetry.addData("Top Flywheel Position",topFlywheel.getCurrentPosition());
+        config.telemetry.addData("Bottom Flywheel Position",bottomFlywheel.getCurrentPosition());
+        config.telemetry.addData("Flywheel Power (both are the same)",topFlywheel.getPower());;
     }
 
 
@@ -132,25 +132,39 @@ public class Outtake implements SubSystem {
 
 
 
-    private void updateTelemetry(TelemetryPacket telemetryPacket) {
-        telemetryPacket.put("Right Lift Pos", right.getCurrentPosition());
-        telemetryPacket.put("Right Lift Power", right.getPower());
-        telemetryPacket.put("Left Lift Pos", left.getCurrentPosition());
-        telemetryPacket.put("Left Lift Power", left.getPower());
-        telemetryPacket.put("Lift Position", position);
-        telemetryPacket.put("Lift Direction", direction);
-        telemetryPacket.put("Switch", switchV.getState());
 
-        addTelemetryData();
-    }
-
-    public InstantAction runFlywheels() {
+    public InstantAction runFlywheels(double speed) {
         return new InstantAction(() -> {
-            bottomFlywheel.setPower(config.gamepad1.right_trigger*2);
-            topFlywheel.setPower(config.gamepad1.right_trigger*2);
-            state = Globals.Outtake.IntakeState.INTAKING;
+            bottomFlywheel.setPower(speed);
+            topFlywheel.setPower(speed);
+            state = OuttakeState.SPINNING_UP;
         });
     }
+    public InstantAction stopFlywheels(){
+        return new InstantAction(() -> {
+            bottomFlywheel.setPower(0);
+            topFlywheel.setPower(0);
+            state = OuttakeState.STOPPED;
+        });
+    }
+    public InstantAction runIndexer(){
+        return new InstantAction(() -> {
+            indexer.setPower(Globals.Outtake.INDEXER_SPINNING_POWER);
+            state = OuttakeState.INDEXING;
+        });
+    }
+    public InstantAction stopIndexer(){
+        return new InstantAction(() -> {
+            indexer.setPower(Globals.Outtake.INDEXER_SPINNING_POWER_RESTING);
+            state = OuttakeState.STOPPED;
+        });
+    }
+    private void resetMotors() {
+        indexer.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        indexer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        state = OuttakeState.STOPPED;
+
+    }
 
 }

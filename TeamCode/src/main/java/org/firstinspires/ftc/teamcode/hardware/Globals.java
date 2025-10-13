@@ -9,7 +9,11 @@ public class Globals {
 
     public static class Intake {
 
-        public static final String INTAKE_MOTOR = "intake";
+        public static final String INTAKE_MOTOR = "bottomFlywheelAndIntake";
+        public static final String INDEXER = "indexer";
+        public static final int INDEX_SLEEP_TIME = 100;
+        public static final String BOTTOM_INTAKE_ROLLER = "topFlywheelAndBottomRoller";
+
 
         public static final double POWER_OFF = 0;
         public static final double POWER_ON = 1;
@@ -21,22 +25,13 @@ public class Globals {
     }
 
     public static final class Outtake {
-        public static final String BOTTOM_FLYWHEEL = "bottomFlywheel";
-        public static final String TOP_FLYWHEEL = "topFlywheel";
+        public static final String BOTTOM_FLYWHEEL = "bottomFlywheelAndIntake";
+        public static final String TOP_FLYWHEEL = "topFlywheelAndBottomRoller";
         public static final String LIMIT_SWITCH = "v";
         public static final String INDEXER = "indexer";
-        public static final int LIFT_TOP_BASKET = 4500;
-        public static final int LIFT_BOTTOM_BASKET = 2700;
+        public static final double INDEXER_SPINNING_POWER = 1;
+        public static final double INDEXER_SPINNING_POWER_RESTING = 0;
 
-        public static final int LIFT_TOP_BAR = 2000;
-        public static final int LIFT_TOP_BAR_ATTACH = 1900;
-
-        public static final int LIFT_BOTTOM = 200;
-
-        public static final double LIFT_OFF = 0;
-        public static final double LIFT_IDLE = 0.1;
-        public static final double LIFT_DOWN = -1;
-        public static final double LIFT_UP = 1;
     }
 
     public static final class Drive {

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.hardware.subsystem;
 
+import static java.lang.Thread.sleep;
+
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -17,6 +19,7 @@ import java.util.List;
 public class Intake implements SubSystem {
     public enum IntakeState {
         INTAKING,
+        INDEXING,
         STOPPED
     }
 
@@ -30,7 +33,7 @@ public class Intake implements SubSystem {
 
     Config config;
 
-    DcMotor intakeMotor;
+    DcMotor intakeMotor, indexer, bottomRoller;
 
     //IntakeColorSensor sensor;
 
@@ -45,12 +48,17 @@ public class Intake implements SubSystem {
     public void init() {
 
         intakeMotor = config.hardwareMap.get(DcMotor.class, Globals.Intake.INTAKE_MOTOR);
-
+        indexer = config.hardwareMap.get(DcMotor.class, Globals.Intake.INDEXER);
+        bottomRoller = config.hardwareMap.get(DcMotor.class, Globals.Intake.BOTTOM_INTAKE_ROLLER);
 
         //sensor = new IntakeColorSensor(config.hardwareMap.get(ColorSensor.class, "colorSensor"));
 
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        indexer.setDirection(DcMotorSimple.Direction.REVERSE);
+        indexer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);// run it with encoder later
+        bottomRoller.setDirection(DcMotorSimple.Direction.REVERSE);
+        bottomRoller.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 //        detected = IntakeContent.NULL;
     }
@@ -72,8 +80,16 @@ public class Intake implements SubSystem {
             newActions.add(stopIntake());
         }
 
+        if (config.gamepad1.y){
+            newActions.add(index());
+        }else{
+            newActions.add(stopIndex());
+        }
+
         config.telemetry.addData("intake state", state);
-        config.telemetry.addData("intake power (0-1)", intakeMotor.getPower());
+        config.telemetry.addData("intake position", intakeMotor.getCurrentPosition());
+        config.telemetry.addData("bottom roller position",bottomRoller.getCurrentPosition());
+        config.telemetry.addData("index position",indexer.getCurrentPosition());
         //config.telemetry.addData("color sensor detections", detected);
 
         return newActions;
@@ -96,7 +112,7 @@ public class Intake implements SubSystem {
     public InstantAction stopIntake() {
         return new InstantAction(() -> {
             intakeMotor.setPower(Globals.Intake.POWER_OFF);
-
+            bottomRoller.setPower(Globals.Intake.POWER_OFF);
             state = IntakeState.STOPPED;
         });
     }
@@ -104,8 +120,26 @@ public class Intake implements SubSystem {
     public InstantAction runIntake() {
         return new InstantAction(() -> {
             intakeMotor.setPower(Globals.Intake.POWER_ON);
-
+            bottomRoller.setPower(Globals.Intake.POWER_ON);
             state = IntakeState.INTAKING;
+        });
+    }
+    public Action index() {
+        return new InstantAction(() -> {
+            //come back to fix
+            indexer.setPower(Globals.Intake.POWER_ON);
+
+            try {
+                wait(Globals.Intake.INDEX_SLEEP_TIME);
+            } catch (InterruptedException e) {
+            }
+            state = IntakeState.INDEXING;
+
+        });
+    }
+    public Action stopIndex() {
+        return new InstantAction(() -> {
+            indexer.setPower(Globals.Intake.POWER_OFF);
         });
     }
 
