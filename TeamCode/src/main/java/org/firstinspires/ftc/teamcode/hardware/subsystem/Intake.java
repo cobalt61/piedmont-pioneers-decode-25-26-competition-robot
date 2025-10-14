@@ -129,10 +129,6 @@ public class Intake implements SubSystem {
             //come back to fix
             indexer.setPower(Globals.Intake.POWER_ON);
 
-            try {
-                wait(Globals.Intake.INDEX_SLEEP_TIME);
-            } catch (InterruptedException e) {
-            }
             state = IntakeState.INDEXING;
 
         });
