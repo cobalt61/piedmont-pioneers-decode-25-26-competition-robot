@@ -57,7 +57,7 @@ public class Intake implements SubSystem {
         intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         indexer.setDirection(DcMotorSimple.Direction.REVERSE);
         indexer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);// run it with encoder later
-        bottomRoller.setDirection(DcMotorSimple.Direction.REVERSE);
+        bottomRoller.setDirection(DcMotorSimple.Direction.FORWARD);
         bottomRoller.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 //        detected = IntakeContent.NULL;
@@ -88,6 +88,10 @@ public class Intake implements SubSystem {
 
         config.telemetry.addData("intake state", state);
         config.telemetry.addData("intake position", intakeMotor.getCurrentPosition());
+        config.telemetry.addData("bottom roller power", bottomRoller.getPower());
+        config.telemetry.addData("intake power", intakeMotor.getPower());
+        config.telemetry.addData("indexer power", indexer.getPower());
+
         config.telemetry.addData("bottom roller position",bottomRoller.getCurrentPosition());
         config.telemetry.addData("index position",indexer.getCurrentPosition());
         //config.telemetry.addData("color sensor detections", detected);

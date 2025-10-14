@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.InstantAction;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import org.firstinspires.ftc.teamcode.hardware.robot.Config;
@@ -47,7 +48,7 @@ public class Outtake implements SubSystem {
 
         // Set motor directions
         bottomFlywheel.setDirection(DcMotor.Direction.REVERSE);
-        topFlywheel.setDirection(DcMotor.Direction.REVERSE);
+        topFlywheel.setDirection(DcMotor.Direction.FORWARD);
         indexer.setDirection(DcMotor.Direction.REVERSE);
 
         // Reset encoders and set motor modes
@@ -124,6 +125,7 @@ public class Outtake implements SubSystem {
         config.telemetry.addData("Top Flywheel Position",topFlywheel.getCurrentPosition());
         config.telemetry.addData("Bottom Flywheel Position",bottomFlywheel.getCurrentPosition());
         config.telemetry.addData("Flywheel Power (both are the same)",topFlywheel.getPower());;
+        config.telemetry.addData("indexer power", indexer.getPower());
     }
 
 
