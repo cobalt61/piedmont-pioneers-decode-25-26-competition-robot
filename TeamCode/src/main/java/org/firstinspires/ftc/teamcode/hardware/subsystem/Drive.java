@@ -73,9 +73,8 @@ public class Drive implements SubSystem {
         double backLeftPower = (y - x + rx) * speed/ denominator;
         double frontRightPower = (y - x - rx) * speed / denominator;
         double backRightPower = (y + x - rx) * speed / denominator;
-/*
         DrivePowersBundle now = new DrivePowersBundle(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
-
+/*
         if (old.moved() && !now.moved()) {
             frontLeftPower = -old.FL;
             frontRightPower = -old.FR;

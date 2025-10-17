@@ -43,4 +43,12 @@ public class Globals {
         public static final double MAX_SPEED = 0.5;
         public static final double WHEEL_LOCK_MIN = 0.2;
     }
+    public static final class BigBack{
+        public static final String LEFT_FRONT_DRIVE = "left_front_drive";
+        public static final String RIGHT_FRONT_DRIVE = "right_front_drive";
+        public static final String LEFT_BACK_DRIVE = "left_back_drive";
+        public static final String RIGHT_BACK_DRIVE = "right_back_drive";
+        public static final double     FORWARD_SPEED = 0.6;
+       public static final double     TURN_SPEED    = 0.5;
+    }
 }
