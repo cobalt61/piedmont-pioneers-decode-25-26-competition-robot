@@ -57,7 +57,6 @@ import org.firstinspires.ftc.teamcode.hardware.Globals;
  */
 
 @Autonomous(name="Robot: Auto Drive By Time", group="Robot")
-@Disabled
 public class BigBack extends LinearOpMode {
 
     /* Declare OpMode members. */
