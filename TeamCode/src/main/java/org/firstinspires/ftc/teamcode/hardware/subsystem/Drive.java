@@ -70,9 +70,10 @@ public class Drive implements SubSystem {
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), Globals.Drive.MAX_SPEED);
 
         double frontLeftPower = (y + x + rx) * speed / denominator;
-        double backLeftPower = (y - x + rx) * speed/ denominator;
-        double frontRightPower = (y - x - rx) * speed / denominator;
+        double backLeftPower = (y - x - rx) * speed/ denominator;
+        double frontRightPower = (y - x + rx) * speed / denominator;
         double backRightPower = (y + x - rx) * speed / denominator;
+        // switched the directions because it was inversed incorrectly
         DrivePowersBundle now = new DrivePowersBundle(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
 /*
         if (old.moved() && !now.moved()) {
