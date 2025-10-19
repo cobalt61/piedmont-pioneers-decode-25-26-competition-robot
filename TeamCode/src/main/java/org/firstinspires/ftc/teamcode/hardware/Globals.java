@@ -27,7 +27,7 @@ public class Globals {
     public static final class Outtake {
         public static final String BOTTOM_FLYWHEEL = "bottomFlywheelAndIntake";
         public static final String TOP_FLYWHEEL = "topFlywheelAndBottomRoller";
-        public static final String TOP_FLYWHEEL_2 = "topFlywheelTopGear";
+       //public static final String TOP_FLYWHEEL_2 = "topFlywheelTopGear";
         public static final String LIMIT_SWITCH = "v";
         public static final String INDEXER = "indexer";
         public static final double INDEXER_SPINNING_POWER = 1;

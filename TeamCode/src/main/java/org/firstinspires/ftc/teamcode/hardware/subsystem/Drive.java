@@ -73,7 +73,7 @@ public class Drive implements SubSystem {
         double backLeftPower = (y - x - rx) * speed/ denominator;
         double frontRightPower = (y - x + rx) * speed / denominator;
         double backRightPower = (y + x - rx) * speed / denominator;
-        // switched the directions because it was inversed incorrectly
+        // switched the directions for adding or subtracting rx because it was inversed incorrectly
         DrivePowersBundle now = new DrivePowersBundle(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
 /*
         if (old.moved() && !now.moved()) {

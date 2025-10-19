@@ -43,15 +43,15 @@ public class Outtake implements SubSystem {
         bottomFlywheel = config.hardwareMap.get(DcMotor.class, Globals.Outtake.BOTTOM_FLYWHEEL);
         topFlywheel = config.hardwareMap.get(DcMotor.class, Globals.Outtake.TOP_FLYWHEEL);
         indexer = config.hardwareMap.get(DcMotor.class, Globals.Outtake.INDEXER);
-        topFlywheel2 = config.hardwareMap.get(DcMotor.class, Globals.Outtake.TOP_FLYWHEEL_2);
+       // topFlywheel2 = config.hardwareMap.get(DcMotor.class, Globals.Outtake.TOP_FLYWHEEL_2);
 
 
 
         // Set motor directions
-        bottomFlywheel.setDirection(DcMotor.Direction.REVERSE);
+        bottomFlywheel.setDirection(DcMotor.Direction.FORWARD);
         topFlywheel.setDirection(DcMotor.Direction.FORWARD);
         indexer.setDirection(DcMotor.Direction.REVERSE);
-        topFlywheel2.setDirection(DcMotor.Direction.REVERSE);
+        //topFlywheel2.setDirection(DcMotor.Direction.REVERSE);
 
         // Reset encoders and set motor modes
         resetMotors();
@@ -141,7 +141,7 @@ public class Outtake implements SubSystem {
         return new InstantAction(() -> {
             bottomFlywheel.setPower(speed);
             topFlywheel.setPower(speed);
-            topFlywheel2.setPower(speed);
+            //topFlywheel2.setPower(speed);
             state = OuttakeState.SPINNING_UP;
         });
     }
@@ -149,7 +149,7 @@ public class Outtake implements SubSystem {
         return new InstantAction(() -> {
             bottomFlywheel.setPower(0);
             topFlywheel.setPower(0);
-            topFlywheel2.setPower(0);
+           // topFlywheel2.setPower(0);
             state = OuttakeState.STOPPED;
         });
     }
