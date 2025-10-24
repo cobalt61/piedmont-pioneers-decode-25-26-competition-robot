@@ -29,8 +29,6 @@
 
 package org.firstinspires.ftc.teamcode.opmode.autonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -56,28 +54,72 @@ import org.firstinspires.ftc.teamcode.hardware.Globals;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Robot: Auto Drive By Time", group="Robot")
-public class BigBack extends LinearOpMode {
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Robot: Auto Drive By Time", group="Robot")
+
+
+public class Autonomous extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private DcMotor         leftFrontDrive;
-    private DcMotor         rightFrontDrive;
-    private DcMotor         leftBackDrive;
-    private DcMotor         rightBackDrive;
+    private DcMotor leftFrontDrive;
+    private DcMotor rightFrontDrive;
+    private DcMotor leftBackDrive;
+    private DcMotor rightBackDrive;
 
-    private ElapsedTime     runtime = new ElapsedTime();
-
-
+    private ElapsedTime runtime = new ElapsedTime();
 
 
-    @Override
+    private void Forward(int seconds){
+        leftFrontDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
+        rightFrontDrive.setPower(Globals.BigBack.FORWARD_SPEED);
+        leftBackDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
+        rightBackDrive.setPower(Globals.BigBack.FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < seconds)) {
+            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+    }
+    private void Right(int Degrees){
+        leftFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
+        rightFrontDrive.setPower(-Globals.BigBack.TURN_SPEED);
+        leftBackDrive.setPower(Globals.BigBack.TURN_SPEED);
+        rightBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < Degrees)) {
+            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+    }
+    private void Left(int turn){
+        leftFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
+        rightFrontDrive.setPower(-Globals.BigBack.TURN_SPEED);
+        leftBackDrive.setPower(Globals.BigBack.TURN_SPEED);
+        rightBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < turn)) {
+            telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+    }
+    private void Backward(int distance){
+        leftFrontDrive.setPower(Globals.BigBack.FORWARD_SPEED);
+        rightFrontDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
+        leftBackDrive.setPower(Globals.BigBack.FORWARD_SPEED);
+        rightBackDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < distance)) {
+            telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+    }
     public void runOpMode() {
 
         // Initialize the drive system variables.
-        leftFrontDrive  = hardwareMap.get(DcMotor.class, Globals.BigBack.LEFT_FRONT_DRIVE);
-        rightFrontDrive  = hardwareMap.get(DcMotor.class, Globals.BigBack.RIGHT_FRONT_DRIVE);
-        leftBackDrive  = hardwareMap.get(DcMotor.class, Globals.BigBack.LEFT_BACK_DRIVE);
-        rightBackDrive  = hardwareMap.get(DcMotor.class, Globals.BigBack.RIGHT_BACK_DRIVE);
+        leftFrontDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.LEFT_FRONT_DRIVE);
+        rightFrontDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.RIGHT_FRONT_DRIVE);
+        leftBackDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.LEFT_BACK_DRIVE);
+        rightBackDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.RIGHT_BACK_DRIVE);
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
@@ -96,16 +138,7 @@ public class BigBack extends LinearOpMode {
         // Step through each leg of the path, ensuring that the OpMode has not been stopped along the way.
 
         // Step 1:  Drive forward for 3 seconds
-        leftFrontDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
-        rightFrontDrive.setPower(Globals.BigBack.FORWARD_SPEED);
-        leftBackDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
-        rightBackDrive.setPower(Globals.BigBack.FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
-            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-
+        Forward(3);
         // Step 2:  Spin right for 1.3 seconds
         leftFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
         rightFrontDrive.setPower(-Globals.BigBack.TURN_SPEED);
