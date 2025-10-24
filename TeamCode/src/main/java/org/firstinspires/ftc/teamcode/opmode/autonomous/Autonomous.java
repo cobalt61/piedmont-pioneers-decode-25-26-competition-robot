@@ -65,16 +65,16 @@ public class Autonomous extends LinearOpMode {
     private DcMotor leftBackDrive;
     private DcMotor rightBackDrive;
 
-    private ElapsedTime runtime = new ElapsedTime();
+    private final ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
 
-    private void Forward(int seconds){
+    private void Forward(double mseconds){
         leftFrontDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
         rightFrontDrive.setPower(Globals.BigBack.FORWARD_SPEED);
         leftBackDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
         rightBackDrive.setPower(Globals.BigBack.FORWARD_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < seconds)) {
+        while (opModeIsActive() && (runtime.seconds() < mseconds)) {
             telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
@@ -92,10 +92,10 @@ public class Autonomous extends LinearOpMode {
 
     }
     private void Left(int turn){
-        leftFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
-        rightFrontDrive.setPower(-Globals.BigBack.TURN_SPEED);
-        leftBackDrive.setPower(Globals.BigBack.TURN_SPEED);
-        rightBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
+        leftFrontDrive.setPower(-Globals.BigBack.TURN_SPEED);
+        rightFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
+        leftBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
+        rightBackDrive.setPower(Globals.BigBack.TURN_SPEED);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < turn)) {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
@@ -139,29 +139,32 @@ public class Autonomous extends LinearOpMode {
 
         // Step 1:  Drive forward for 3 seconds
         Forward(3);
-        // Step 2:  Spin right for 1.3 seconds
-        leftFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
-        rightFrontDrive.setPower(-Globals.BigBack.TURN_SPEED);
-        leftBackDrive.setPower(Globals.BigBack.TURN_SPEED);
-        rightBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.3)) {
-            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-
-        // Step 3:  Drive Backward for 1 Second
-        leftFrontDrive.setPower(Globals.BigBack.FORWARD_SPEED);
-        rightFrontDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
-        leftBackDrive.setPower(Globals.BigBack.FORWARD_SPEED);
-        rightBackDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.0)) {
-            telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
+        Forward(2);
+//        // Step 2:  Spin right for 1.3 seconds
+//        leftFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
+//        rightFrontDrive.setPower(-Globals.BigBack.TURN_SPEED);
+//        leftBackDrive.setPower(Globals.BigBack.TURN_SPEED);
+//        rightBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
+//        runtime.reset();
+//        while (opModeIsActive() && (runtime.seconds() < 1.3)) {
+//            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
+//            telemetry.update();
+//        }
+//
+//        // Step 3:  Drive Backward for 1 Second
+//        leftFrontDrive.setPower(Globals.BigBack.FORWARD_SPEED);
+//        rightFrontDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
+//        leftBackDrive.setPower(Globals.BigBack.FORWARD_SPEED);
+//        rightBackDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
+//        runtime.reset();
+//        while (opModeIsActive() && (runtime.seconds() < 1.0)) {
+//            telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
+//            telemetry.update();
+//        }
 
         // Step 4:  Stop
+
+
         leftFrontDrive.setPower(0);
         rightFrontDrive.setPower(0);
         leftBackDrive.setPower(0);
