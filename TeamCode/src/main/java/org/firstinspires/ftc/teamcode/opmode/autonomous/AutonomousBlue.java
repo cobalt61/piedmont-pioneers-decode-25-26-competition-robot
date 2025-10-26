@@ -69,33 +69,42 @@ public class AutonomousBlue extends LinearOpMode {
 
 // is cod!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     private void Forward(double mseconds){
-        leftFrontDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
-        rightFrontDrive.setPower(Globals.BigBack.FORWARD_SPEED);
-        leftBackDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
-        rightBackDrive.setPower(Globals.BigBack.FORWARD_SPEED);
         runtime.reset();
-    }
-    private void Right(int Degrees){
-        leftFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
-        rightFrontDrive.setPower(-Globals.BigBack.TURN_SPEED);
-        leftBackDrive.setPower(Globals.BigBack.TURN_SPEED);
-        rightBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
-        runtime.reset();
+        while  (runtime.seconds() < mseconds) {
+            leftFrontDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
+            rightFrontDrive.setPower(Globals.BigBack.FORWARD_SPEED);
+            leftBackDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
+            rightBackDrive.setPower(Globals.BigBack.FORWARD_SPEED);
 
+        }
+    }
+
+    private void Right(int Degrees){
+        runtime.reset();
+        while  (runtime.seconds() < Degrees){
+            leftFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
+            rightFrontDrive.setPower(-Globals.BigBack.TURN_SPEED);
+            leftBackDrive.setPower(Globals.BigBack.TURN_SPEED);
+            rightBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
+        }
     }
     private void Left(int turn){
-        leftFrontDrive.setPower(-Globals.BigBack.TURN_SPEED);
-        rightFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
-        leftBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
-        rightBackDrive.setPower(Globals.BigBack.TURN_SPEED);
         runtime.reset();
+        while  (runtime.seconds() < turn) {
+            leftFrontDrive.setPower(-Globals.BigBack.TURN_SPEED);
+            rightFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
+            leftBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
+            rightBackDrive.setPower(Globals.BigBack.TURN_SPEED);
+        }
     }
-    private void Backward(int distance){
+    private void Backward(int distance)
+    {runtime.reset();
+    while  (runtime.seconds() < distance){
         leftFrontDrive.setPower(Globals.BigBack.FORWARD_SPEED);
         rightFrontDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
         leftBackDrive.setPower(Globals.BigBack.FORWARD_SPEED);
         rightBackDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
-        runtime.reset();
+        }
     }
 
     private void Input(boolean on) {
@@ -111,13 +120,13 @@ public class AutonomousBlue extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.RIGHT_FRONT_DRIVE);
         leftBackDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.LEFT_BACK_DRIVE);
         rightBackDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.RIGHT_BACK_DRIVE);
+
+
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         waitForStart();
-        Backward(500);
-        Left(250);
 
 
 
