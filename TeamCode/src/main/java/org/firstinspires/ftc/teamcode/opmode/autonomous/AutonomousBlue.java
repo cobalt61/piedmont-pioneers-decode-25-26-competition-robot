@@ -74,10 +74,6 @@ public class AutonomousBlue extends LinearOpMode {
         leftBackDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
         rightBackDrive.setPower(Globals.BigBack.FORWARD_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < mseconds)) {
-            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
     }
     private void Right(int Degrees){
         leftFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
@@ -85,10 +81,6 @@ public class AutonomousBlue extends LinearOpMode {
         leftBackDrive.setPower(Globals.BigBack.TURN_SPEED);
         rightBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < Degrees)) {
-            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
 
     }
     private void Left(int turn){
@@ -97,10 +89,6 @@ public class AutonomousBlue extends LinearOpMode {
         leftBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
         rightBackDrive.setPower(Globals.BigBack.TURN_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < turn)) {
-            telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
     }
     private void Backward(int distance){
         leftFrontDrive.setPower(Globals.BigBack.FORWARD_SPEED);
@@ -108,11 +96,14 @@ public class AutonomousBlue extends LinearOpMode {
         leftBackDrive.setPower(Globals.BigBack.FORWARD_SPEED);
         rightBackDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < distance)) {
-            telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
     }
+
+    private void Input(boolean on) {
+
+
+    }
+
+
     public void runOpMode() {
 
         // Initialize the drive system variables.
@@ -120,24 +111,14 @@ public class AutonomousBlue extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.RIGHT_FRONT_DRIVE);
         leftBackDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.LEFT_BACK_DRIVE);
         rightBackDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.RIGHT_BACK_DRIVE);
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to run");    //
-        telemetry.update();
-
-        // Wait for the game to start (driver presses START)
         waitForStart();
+        Backward(500);
+        Left(250);
 
-        // Step through each leg of the path, ensuring that the OpMode has not been stopped along the way.
-
-        // Step 1:  Drive forward for 3 seconds
 
 
     }
