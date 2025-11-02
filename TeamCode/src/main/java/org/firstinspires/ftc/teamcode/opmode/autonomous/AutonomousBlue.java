@@ -28,12 +28,17 @@
  */
 
 package org.firstinspires.ftc.teamcode.opmode.autonomous;
-
+import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.InstantAction;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.Globals;
+import org.firstinspires.ftc.teamcode.hardware.robot.Config;
+import org.firstinspires.ftc.teamcode.hardware.subsystem.Intake;
+import org.firstinspires.ftc.teamcode.hardware.subsystem.SubSystem;
 
 /*
  * This OpMode illustrates the concept of driving a path based on time.
@@ -57,24 +62,26 @@ import org.firstinspires.ftc.teamcode.hardware.Globals;
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Robot: Auto Drive By Time", group="Robot")
 
 
-public class AutonomousBlue extends LinearOpMode {
+
+public abstract class AutonomousBlue extends LinearOpMode {
 
     /* Declare OpMode members. */
     private DcMotor leftFrontDrive;
     private DcMotor rightFrontDrive;
     private DcMotor leftBackDrive;
     private DcMotor rightBackDrive;
+    private DcMotor bottomRoller, indexer, topFlywheel, intakeMotor, topFlywheel2;
 
+    public Config config;
     private final ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-// is cod!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     private void Forward(double mseconds){
         runtime.reset();
         while  (runtime.seconds() < mseconds) {
-            leftFrontDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
-            rightFrontDrive.setPower(Globals.BigBack.FORWARD_SPEED);
-            leftBackDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
-            rightBackDrive.setPower(Globals.BigBack.FORWARD_SPEED);
+            leftFrontDrive.setPower(Globals.Auto.FORWARD_SPEED);
+            rightFrontDrive.setPower(Globals.Auto.FORWARD_SPEED);
+            leftBackDrive.setPower(Globals.Auto.FORWARD_SPEED);
+            rightBackDrive.setPower(Globals.Auto.FORWARD_SPEED);
 
         }
     }
@@ -82,51 +89,75 @@ public class AutonomousBlue extends LinearOpMode {
     private void Right(int Degrees){
         runtime.reset();
         while  (runtime.seconds() < Degrees){
-            leftFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
-            rightFrontDrive.setPower(-Globals.BigBack.TURN_SPEED);
-            leftBackDrive.setPower(Globals.BigBack.TURN_SPEED);
-            rightBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
+            leftFrontDrive.setPower(Globals.Auto.TURN_SPEED);
+            rightFrontDrive.setPower(-Globals.Auto.TURN_SPEED);
+            leftBackDrive.setPower(Globals.Auto.TURN_SPEED);
+            rightBackDrive.setPower(-Globals.Auto.TURN_SPEED);
         }
     }
     private void Left(int turn){
         runtime.reset();
         while  (runtime.seconds() < turn) {
-            leftFrontDrive.setPower(-Globals.BigBack.TURN_SPEED);
-            rightFrontDrive.setPower(Globals.BigBack.TURN_SPEED);
-            leftBackDrive.setPower(-Globals.BigBack.TURN_SPEED);
-            rightBackDrive.setPower(Globals.BigBack.TURN_SPEED);
+            leftFrontDrive.setPower(-Globals.Auto.TURN_SPEED);
+            rightFrontDrive.setPower(Globals.Auto.TURN_SPEED);
+            leftBackDrive.setPower(-Globals.Auto.TURN_SPEED);
+            rightBackDrive.setPower(Globals.Auto.TURN_SPEED);
         }
     }
     private void Backward(int distance)
     {runtime.reset();
-    while  (runtime.seconds() < distance){
-        leftFrontDrive.setPower(Globals.BigBack.FORWARD_SPEED);
-        rightFrontDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
-        leftBackDrive.setPower(Globals.BigBack.FORWARD_SPEED);
-        rightBackDrive.setPower(-Globals.BigBack.FORWARD_SPEED);
+        while  (runtime.seconds() < distance){
+            leftFrontDrive.setPower(-Globals.Auto.FORWARD_SPEED);
+            rightFrontDrive.setPower(-Globals.Auto.FORWARD_SPEED);
+            leftBackDrive.setPower(-Globals.Auto.FORWARD_SPEED);
+            rightBackDrive.setPower(-Globals.Auto.FORWARD_SPEED);
         }
     }
-
-    private void Input(boolean on) {
+    public void index() {
+        indexer.setPower(Globals.Intake.POWER_ON);
+    }
+    public void runIntake() {
+        intakeMotor.setPower(Globals.Intake.POWER_ON);
+        bottomRoller.setPower(Globals.Intake.POWER_ON);
+    }
+    public void stopIntake() {
+        intakeMotor.setPower(Globals.Intake.POWER_OFF);
+        bottomRoller.setPower(Globals.Intake.POWER_OFF);
+    }
+    private void Input() {
+        runIntake();
+        sleep(200);
+        index();
+        sleep(300);
+        stopIntake();
+    }
+    private void Output() {
 
 
     }
-
-
     public void runOpMode() {
 
         // Initialize the drive system variables.
-        leftFrontDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.LEFT_FRONT_DRIVE);
-        rightFrontDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.RIGHT_FRONT_DRIVE);
-        leftBackDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.LEFT_BACK_DRIVE);
-        rightBackDrive = hardwareMap.get(DcMotor.class, Globals.BigBack.RIGHT_BACK_DRIVE);
+        leftFrontDrive = hardwareMap.get(DcMotor.class, Globals.Auto.LEFT_FRONT_DRIVE);
+        rightFrontDrive = hardwareMap.get(DcMotor.class, Globals.Auto.RIGHT_FRONT_DRIVE);
+        leftBackDrive = hardwareMap.get(DcMotor.class, Globals.Auto.LEFT_BACK_DRIVE);
+        rightBackDrive = hardwareMap.get(DcMotor.class, Globals.Auto.RIGHT_BACK_DRIVE);
+        intakeMotor = config.hardwareMap.get(DcMotor.class, Globals.Intake.INTAKE_MOTOR);
+        indexer = config.hardwareMap.get(DcMotor.class, Globals.Intake.INDEXER);
+        bottomRoller = config.hardwareMap.get(DcMotor.class, Globals.Intake.BOTTOM_INTAKE_ROLLER);
 
-
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        indexer.setDirection(DcMotorSimple.Direction.REVERSE);
+        indexer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bottomRoller.setDirection(DcMotorSimple.Direction.FORWARD);
+        bottomRoller.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         waitForStart();
+        Forward(1000);
 
 
 
