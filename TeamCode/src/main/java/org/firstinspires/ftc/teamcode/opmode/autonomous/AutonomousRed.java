@@ -59,11 +59,11 @@ import org.firstinspires.ftc.teamcode.hardware.subsystem.SubSystem;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="AutonomousBlue", group="Robot")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="AutonomousRed", group="Robot")
 
 
 
-public abstract class AutonomousBlue extends LinearOpMode {
+public abstract class AutonomousRed extends LinearOpMode {
 
     /* Declare OpMode members. */
     private DcMotor leftFrontDrive;
@@ -83,11 +83,11 @@ public abstract class AutonomousBlue extends LinearOpMode {
             leftBackDrive.setPower(Globals.Auto.FORWARD_SPEED);
             rightBackDrive.setPower(Globals.Auto.FORWARD_SPEED);
         }
-      if (forwardTime.milliseconds() > milseconds) {
-           leftFrontDrive.setPower(0);
-           rightFrontDrive.setPower(0);
-           leftBackDrive.setPower(0);
-           rightBackDrive.setPower(0);
+        if (forwardTime.milliseconds() > milseconds) {
+            leftFrontDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightBackDrive.setPower(0);
         }
     }
 
@@ -100,10 +100,10 @@ public abstract class AutonomousBlue extends LinearOpMode {
             rightBackDrive.setPower(-Globals.Auto.TURN_SPEED);
         }
         if (rightTurnTime.milliseconds() > Degrees) {
-           leftFrontDrive.setPower(0);
-           rightFrontDrive.setPower(0);
-           leftBackDrive.setPower(0);
-           rightBackDrive.setPower(0);
+            leftFrontDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightBackDrive.setPower(0);
         }
     }
     private void Left(int turn){
@@ -115,10 +115,10 @@ public abstract class AutonomousBlue extends LinearOpMode {
             rightBackDrive.setPower(Globals.Auto.TURN_SPEED);
         }
         if (leftTurnTime.milliseconds() > turn) {
-                leftFrontDrive.setPower(0);
-                rightFrontDrive.setPower(0);
-                leftBackDrive.setPower(0);
-                rightBackDrive.setPower(0);
+            leftFrontDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightBackDrive.setPower(0);
         }
     }
     private void Backward(int distance)
@@ -131,10 +131,10 @@ public abstract class AutonomousBlue extends LinearOpMode {
             rightBackDrive.setPower(-Globals.Auto.FORWARD_SPEED);
         }
         if (backwardTime.milliseconds() > distance){
-                leftFrontDrive.setPower(0);
-                rightFrontDrive.setPower(0);
-                leftBackDrive.setPower(0);
-                rightBackDrive.setPower(0);
+            leftFrontDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightBackDrive.setPower(0);
         }
     }
     public void index() {
@@ -152,7 +152,7 @@ public abstract class AutonomousBlue extends LinearOpMode {
     public void runOuttake() {
         topFlywheel.setPower(Globals.Outtake.POWER_ON);
         bottomFlywheel.setPower(Globals.Outtake.POWER_ON);
-        sleep(300);
+        sleep(100);
         indexer.setPower(Globals.Intake.POWER_ON);
     }
 
@@ -161,7 +161,6 @@ public abstract class AutonomousBlue extends LinearOpMode {
         bottomFlywheel.setPower(Globals.Outtake.POWER_OFF);
         indexer.setPower(Globals.Intake.POWER_OFF);
     }
-
 
     private void Input() {
         runIntake();
@@ -207,6 +206,9 @@ public abstract class AutonomousBlue extends LinearOpMode {
         runOuttake();
         sleep(100);
         stopOuttake();
+
+
+
 
     }
 }
