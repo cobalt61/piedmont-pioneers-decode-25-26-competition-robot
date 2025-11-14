@@ -28,8 +28,6 @@
  */
 
 package org.firstinspires.ftc.teamcode.opmode.autonomous;
-import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.InstantAction;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -37,8 +35,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.Globals;
 import org.firstinspires.ftc.teamcode.hardware.robot.Config;
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Intake;
-import org.firstinspires.ftc.teamcode.hardware.subsystem.SubSystem;
 
 /*
  * This OpMode illustrates the concept of driving a path based on time.
@@ -63,7 +59,7 @@ import org.firstinspires.ftc.teamcode.hardware.subsystem.SubSystem;
 
 
 
-public abstract class AutonomousRed extends LinearOpMode {
+public abstract class AutonomousRedLow extends LinearOpMode {
 
     /* Declare OpMode members. */
     private DcMotor leftFrontDrive;
@@ -149,14 +145,12 @@ public abstract class AutonomousRed extends LinearOpMode {
         bottomRoller.setPower(Globals.Intake.POWER_OFF);
     }
 
-    public void runOuttake() {
+    public void Outtake() {
         topFlywheel.setPower(Globals.Outtake.POWER_ON);
         bottomFlywheel.setPower(Globals.Outtake.POWER_ON);
         sleep(100);
         indexer.setPower(Globals.Intake.POWER_ON);
-    }
-
-    public void stopOuttake() {
+        sleep(100);
         topFlywheel.setPower(Globals.Outtake.POWER_OFF);
         bottomFlywheel.setPower(Globals.Outtake.POWER_OFF);
         indexer.setPower(Globals.Intake.POWER_OFF);
@@ -202,10 +196,14 @@ public abstract class AutonomousRed extends LinearOpMode {
         bottomFlywheel.setDirection(DcMotorSimple.Direction.FORWARD);
         bottomFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
-        Backward(400);
-        runOuttake();
-        sleep(100);
-        stopOuttake();
+        Forward(500);
+        Right(250);
+        runIntake();
+        Forward(100);
+        stopIntake();
+        Left(300);
+        Outtake();
+
 
 
 
