@@ -41,7 +41,7 @@
 
 public class Base extends LinearOpMode {
     /* Declare OpMode members. */
-    
+
     protected DcMotor leftFrontDrive;
     protected DcMotor rightFrontDrive;
     protected DcMotor leftBackDrive;
@@ -50,9 +50,10 @@ public class Base extends LinearOpMode {
 
     public Config config;
     protected final ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-    private void Forward(int milseconds){
+
+    private void forward(int milseconds) {
         ElapsedTime forwardTime = new ElapsedTime();
-        while  (forwardTime.milliseconds() < milseconds) {
+        while (forwardTime.milliseconds() < milseconds) {
             leftFrontDrive.setPower(Globals.Auto.FORWARD_SPEED);
             rightFrontDrive.setPower(Globals.Auto.FORWARD_SPEED);
             leftBackDrive.setPower(Globals.Auto.FORWARD_SPEED);
@@ -65,7 +66,7 @@ public class Base extends LinearOpMode {
     }
 
 
-    private void Right(int Degrees) {
+    private void right(int Degrees) {
         ElapsedTime rightTurnTime = new ElapsedTime();
         while (rightTurnTime.milliseconds() < Degrees) {
             leftFrontDrive.setPower(Globals.Auto.TURN_SPEED);
@@ -78,9 +79,10 @@ public class Base extends LinearOpMode {
         leftBackDrive.setPower(0);
         rightBackDrive.setPower(0);
     }
-    private void Left(int turn){
+
+    private void left(int turn) {
         ElapsedTime leftTurnTime = new ElapsedTime();
-        while  (leftTurnTime.milliseconds() < turn) {
+        while (leftTurnTime.milliseconds() < turn) {
             leftFrontDrive.setPower(-Globals.Auto.TURN_SPEED);
             rightFrontDrive.setPower(Globals.Auto.TURN_SPEED);
             leftBackDrive.setPower(-Globals.Auto.TURN_SPEED);
@@ -92,10 +94,11 @@ public class Base extends LinearOpMode {
         rightBackDrive.setPower(0);
 
     }
-    private void Backward(int mS)
-    { ElapsedTime backwardTime = new ElapsedTime();
 
-        while  (backwardTime.milliseconds() <= mS){
+    private void backward(int mS) {
+        ElapsedTime backwardTime = new ElapsedTime();
+
+        while (backwardTime.milliseconds() <= mS) {
             leftFrontDrive.setPower(-Globals.Auto.FORWARD_SPEED);
             rightFrontDrive.setPower(-Globals.Auto.FORWARD_SPEED);
             leftBackDrive.setPower(-Globals.Auto.FORWARD_SPEED);
@@ -106,20 +109,23 @@ public class Base extends LinearOpMode {
         leftBackDrive.setPower(0);
         rightBackDrive.setPower(0);
     }
+
     public void index() {
         indexer.setPower(Globals.Intake.POWER_ON);
     }
+
     public void runIntake() {
         intakeMotor.setPower(Globals.Intake.POWER_ON);
         bottomRoller.setPower(Globals.Intake.POWER_ON);
     }
+
     public void stopIntake() {
         intakeMotor.setPower(Globals.Intake.POWER_OFF);
         bottomRoller.setPower(Globals.Intake.POWER_OFF);
 
     }
 
-    public void Outtake() {
+    public void outtake() {
         topFlywheel.setPower(Globals.Outtake.POWER_ON);
         bottomFlywheel.setPower(Globals.Outtake.POWER_ON);
         sleep(300);
@@ -129,60 +135,86 @@ public class Base extends LinearOpMode {
         bottomFlywheel.setPower(Globals.Outtake.POWER_OFF);
         indexer.setPower(Globals.Intake.POWER_OFF);
     }
+
     public void runOpMode() {
-         internalRunMode();
 
     }
-protected void internalRunMode(){
-    leftFrontDrive = hardwareMap.get(DcMotor.class, Globals.Auto.LEFT_FRONT_DRIVE);
-    rightFrontDrive = hardwareMap.get(DcMotor.class, Globals.Auto.RIGHT_FRONT_DRIVE);
-    leftBackDrive = hardwareMap.get(DcMotor.class, Globals.Auto.LEFT_BACK_DRIVE);
-    rightBackDrive = hardwareMap.get(DcMotor.class, Globals.Auto.RIGHT_BACK_DRIVE);
-    intakeMotor = config.hardwareMap.get(DcMotor.class, Globals.Intake.INTAKE_MOTOR);
-    indexer = config.hardwareMap.get(DcMotor.class, Globals.Intake.INDEXER);
-    bottomRoller = config.hardwareMap.get(DcMotor.class, Globals.Intake.BOTTOM_INTAKE_ROLLER);
-    topFlywheel = config.hardwareMap.get(DcMotor.class, Globals.Outtake.TOP_FLYWHEEL);
-    bottomFlywheel = config.hardwareMap.get(DcMotor.class, Globals.Outtake.BOTTOM_FLYWHEEL);
 
-    intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-    intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    indexer.setDirection(DcMotorSimple.Direction.REVERSE);
-    indexer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    bottomRoller.setDirection(DcMotorSimple.Direction.FORWARD);
-    bottomRoller.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-    rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-    leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-    rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-    topFlywheel.setDirection(DcMotorSimple.Direction.FORWARD);
-    topFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    bottomFlywheel.setDirection(DcMotorSimple.Direction.FORWARD);
-    bottomFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-}
-protected enum Combo {
-        GGP(),
-        GPG(),
-        PGG(),
+    protected void internalRunMode() {
+        leftFrontDrive = hardwareMap.get(DcMotor.class, Globals.Auto.LEFT_FRONT_DRIVE);
+        rightFrontDrive = hardwareMap.get(DcMotor.class, Globals.Auto.RIGHT_FRONT_DRIVE);
+        leftBackDrive = hardwareMap.get(DcMotor.class, Globals.Auto.LEFT_BACK_DRIVE);
+        rightBackDrive = hardwareMap.get(DcMotor.class, Globals.Auto.RIGHT_BACK_DRIVE);
+        intakeMotor = config.hardwareMap.get(DcMotor.class, Globals.Intake.INTAKE_MOTOR);
+        indexer = config.hardwareMap.get(DcMotor.class, Globals.Intake.INDEXER);
+        bottomRoller = config.hardwareMap.get(DcMotor.class, Globals.Intake.BOTTOM_INTAKE_ROLLER);
+        topFlywheel = config.hardwareMap.get(DcMotor.class, Globals.Outtake.TOP_FLYWHEEL);
+        bottomFlywheel = config.hardwareMap.get(DcMotor.class, Globals.Outtake.BOTTOM_FLYWHEEL);
 
-}
-protected void startFromBack(Boolean isBlue, Combo currentCombo){
-if (Combo.GGP == currentCombo) {
-    Forward(500);
-}
-else if (Combo.GPG == currentCombo) {
-        Forward(600);
-} else {
-    Forward(700);
-}
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        indexer.setDirection(DcMotorSimple.Direction.REVERSE);
+        indexer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bottomRoller.setDirection(DcMotorSimple.Direction.FORWARD);
+        bottomRoller.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        topFlywheel.setDirection(DcMotorSimple.Direction.FORWARD);
+        topFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bottomFlywheel.setDirection(DcMotorSimple.Direction.FORWARD);
+        bottomFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
 
-if (isBlue) {
-    Left(500);
-}
-else{
-    Right(500);
-}
-runIntake();
+    protected enum Combo {
+        PPG(),
+        PGP(),
+        GPP(),
 
-}
+    }
+    protected enum Color {
+        red(),
+        blue(),
+    }
+
+    protected void startFromBack(Color currentColor, Combo currentCombo) {
+        switch (currentCombo) {
+            case PPG:
+                forward(500);
+            break;
+            case PGP:
+                forward(600);
+            break;
+            case GPP:
+                forward(700);
+            break;
+
+
+        }
+        switch (currentColor) {
+            case red:
+                right(500);
+            break;
+            case blue:
+                left(500);
+            break;
+
+        }
+
+        runIntake();
+        forward(150);
+        stopIntake();
+        switch (currentColor) {
+            case red:
+                right(400);
+            break;
+            case blue:
+                left(400);
+            break;
+        }
+        outtake();
+
+    }
 
 }
