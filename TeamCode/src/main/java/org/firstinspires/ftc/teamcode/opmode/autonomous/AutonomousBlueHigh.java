@@ -161,41 +161,41 @@ public abstract class AutonomousBlueHigh extends LinearOpMode {
 
     }
     public void runOpMode() {
+try {
+    // Initialize the drive system variables.
+    leftFrontDrive = hardwareMap.get(DcMotor.class, Globals.Auto.LEFT_FRONT_DRIVE);
+    rightFrontDrive = hardwareMap.get(DcMotor.class, Globals.Auto.RIGHT_FRONT_DRIVE);
+    leftBackDrive = hardwareMap.get(DcMotor.class, Globals.Auto.LEFT_BACK_DRIVE);
+    rightBackDrive = hardwareMap.get(DcMotor.class, Globals.Auto.RIGHT_BACK_DRIVE);
+    intakeMotor = config.hardwareMap.get(DcMotor.class, Globals.Intake.INTAKE_MOTOR);
+    indexer = config.hardwareMap.get(DcMotor.class, Globals.Intake.INDEXER);
+    bottomRoller = config.hardwareMap.get(DcMotor.class, Globals.Intake.BOTTOM_INTAKE_ROLLER);
+    topFlywheel = config.hardwareMap.get(DcMotor.class, Globals.Outtake.TOP_FLYWHEEL);
+    bottomFlywheel = config.hardwareMap.get(DcMotor.class, Globals.Outtake.BOTTOM_FLYWHEEL);
 
-        // Initialize the drive system variables.
-        leftFrontDrive = hardwareMap.get(DcMotor.class, Globals.Auto.LEFT_FRONT_DRIVE);
-        rightFrontDrive = hardwareMap.get(DcMotor.class, Globals.Auto.RIGHT_FRONT_DRIVE);
-        leftBackDrive = hardwareMap.get(DcMotor.class, Globals.Auto.LEFT_BACK_DRIVE);
-        rightBackDrive = hardwareMap.get(DcMotor.class, Globals.Auto.RIGHT_BACK_DRIVE);
-        intakeMotor = config.hardwareMap.get(DcMotor.class, Globals.Intake.INTAKE_MOTOR);
-        indexer = config.hardwareMap.get(DcMotor.class, Globals.Intake.INDEXER);
-        bottomRoller = config.hardwareMap.get(DcMotor.class, Globals.Intake.BOTTOM_INTAKE_ROLLER);
-        topFlywheel = config.hardwareMap.get(DcMotor.class, Globals.Outtake.TOP_FLYWHEEL);
-        bottomFlywheel = config.hardwareMap.get(DcMotor.class, Globals.Outtake.BOTTOM_FLYWHEEL);
+    intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+    intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    indexer.setDirection(DcMotorSimple.Direction.REVERSE);
+    indexer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    bottomRoller.setDirection(DcMotorSimple.Direction.FORWARD);
+    bottomRoller.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+    rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+    leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+    rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+    topFlywheel.setDirection(DcMotorSimple.Direction.FORWARD);
+    topFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    bottomFlywheel.setDirection(DcMotorSimple.Direction.FORWARD);
+    bottomFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+}
+catch (Exception e) {
+    telemetry.addData("FATAL ERROR" ,"Init failed completely " +e.getMessage());
+    telemetry.addData("HINT", "Check control hub motor cable connections and config names");
+    telemetry.update();
+}
 
-        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        indexer.setDirection(DcMotorSimple.Direction.REVERSE);
-        indexer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        bottomRoller.setDirection(DcMotorSimple.Direction.FORWARD);
-        bottomRoller.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        topFlywheel.setDirection(DcMotorSimple.Direction.FORWARD);
-        topFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        bottomFlywheel.setDirection(DcMotorSimple.Direction.FORWARD);
-        bottomFlywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         waitForStart();
-        Backward(300);
-        Outtake();
-        Backward(500);
-        Left(250);
-        runIntake();
-        Forward(100);
-        stopIntake();
-        Right(350);
-        Outtake();
+        Backward(3000);
+
     }
 }

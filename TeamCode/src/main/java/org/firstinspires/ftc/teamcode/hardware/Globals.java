@@ -32,6 +32,8 @@ public class Globals {
         public static final String INDEXER = "indexer";
         public static final double INDEXER_SPINNING_POWER = 1;
         public static final double INDEXER_SPINNING_POWER_RESTING = 0;
+        public static final double POWER_ON = 1;
+        public static final double POWER_OFF = 0;
 
     }
 
