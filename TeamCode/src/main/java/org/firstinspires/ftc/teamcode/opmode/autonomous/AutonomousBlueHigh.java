@@ -160,6 +160,8 @@ public abstract class AutonomousBlueHigh extends LinearOpMode {
         stopIntake();
 
     }
+
+    @Override
     public void runOpMode() {
 try {
     // Initialize the drive system variables.
